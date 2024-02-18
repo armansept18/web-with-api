@@ -18,15 +18,19 @@ import { api } from "../api/axios";
 export const ModalInputProduct = ({ isOpen, onClose, fetchProducts, id }) => {
   const toast = useToast();
   const [data, setData] = useState({
-    url: "",
-    name: "",
+    thumbnail: "",
+    title: "",
     price: 0,
   });
 
   const fetchProductById = async () => {
     try {
       const res = await api.get(`/products/${id}`);
-      setData({ ...res.data });
+      setData({
+        thumbnail: res.data.thumbnail,
+        title: res.data.title,
+        price: res.data.price,
+      });
     } catch (err) {
       console.log(err);
     }
@@ -55,8 +59,8 @@ export const ModalInputProduct = ({ isOpen, onClose, fetchProducts, id }) => {
 
   const clear = () => {
     setData({
-      url: "",
-      name: "",
+      thumbnail: "",
+      title: "",
       price: 0,
     });
   };
@@ -65,7 +69,7 @@ export const ModalInputProduct = ({ isOpen, onClose, fetchProducts, id }) => {
     e.preventDefault();
     try {
       if (id) {
-        await api.put(`/products/${id}`, {
+        await api.put(`/products/${id}`, data, {
           headers: {
             "Content-Type": "application/json",
           },
@@ -74,7 +78,7 @@ export const ModalInputProduct = ({ isOpen, onClose, fetchProducts, id }) => {
           title: "Success",
           description: "Product updated successfully",
           status: "success",
-          duration: 3000,
+          duration: 1000,
           isClosable: true,
         });
       } else {
@@ -83,7 +87,7 @@ export const ModalInputProduct = ({ isOpen, onClose, fetchProducts, id }) => {
           title: "Success",
           description: "Product added successfully",
           status: "success",
-          duration: 3000,
+          duration: 1000,
           isClosable: true,
         });
         clear();
@@ -96,7 +100,7 @@ export const ModalInputProduct = ({ isOpen, onClose, fetchProducts, id }) => {
         title: "Error",
         description: "Error submitting product",
         status: "error",
-        duration: 3000,
+        duration: 1000,
         isClosable: true,
       });
     }
@@ -109,7 +113,7 @@ export const ModalInputProduct = ({ isOpen, onClose, fetchProducts, id }) => {
         title: "Success",
         description: "Product deleted successfully",
         status: "success",
-        duration: 3000,
+        duration: 1000,
         isClosable: true,
       });
       clear();
@@ -121,7 +125,7 @@ export const ModalInputProduct = ({ isOpen, onClose, fetchProducts, id }) => {
         title: "Error",
         description: "Error deleting product",
         status: "error",
-        duration: 3000,
+        duration: 1000,
         isClosable: true,
       });
     }

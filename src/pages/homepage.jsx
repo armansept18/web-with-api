@@ -17,14 +17,12 @@ export const HomePage = ({ search }) => {
   const fetchProducts = async (page) => {
     try {
       setLoading(true);
-      setTimeout(async () => {
-        const res = await api.get("/products/search", {
-          params: { q: search, limit: 20, skip: (page - 1) * 20 },
-        });
-        setProducts([...res.data.products]);
-        setTotalPages(Math.ceil(res.data.total / 20));
-        setLoading(false);
-      }, 800);
+      const res = await api.get("/products/search", {
+        params: { q: search, limit: 20, skip: (page - 1) * 20 },
+      });
+      setProducts([...res.data.products]);
+      setTotalPages(Math.ceil(res.data.total / 20));
+      setLoading(false);
     } catch (err) {
       console.log(err);
       setLoading(false);
@@ -54,7 +52,7 @@ export const HomePage = ({ search }) => {
         </Button>
         {loading ? (
           <Center mt={4}>
-            <Spinner size="lg" />
+            <Spinner size="xl" />
           </Center>
         ) : (
           <ProductList
